@@ -59,6 +59,7 @@ def create_file_share_db(cursor):
             "Unable to create table",
         )
 
+
 def write_data_to_db(cursor, script):
     """write some data to the database"""
     text_data = "The quick brown fox jumped over the lazy dog."
@@ -110,9 +111,11 @@ def main():
     cnx = mysql.connector.connect(host="mariadb", user="root", password="pass")
     cursor = cnx.cursor()
     create_file_share_db(cursor)
-    write_data_to_db(cursor, 'test1')
+    write_data_to_db(cursor, "test1")
+    cnx.commit()
     cnx.close()
 
     while 1:
-        
-
+        cnx = mysql.connector.connect(host="mariadb", user="root", password="pass")
+        get_data_from_db(cnx.cursor(), "test1")
+        cnx.close()
