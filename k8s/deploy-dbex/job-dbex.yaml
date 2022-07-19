@@ -1,0 +1,15 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: dbex
+spec:
+  template:
+    spec:
+      containers:
+        - name: dbex
+          image: dbex
+          imagePullPolicy: IfNotPresent
+          command:
+            - "sleep"
+            - "3500"
+      restartPolicy: Never

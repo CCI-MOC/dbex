@@ -1,0 +1,8 @@
+commonLabels:
+  app: dbex
+namespace: dbex
+
+resources:
+  - pvc-mariadb.yaml
+  - svc-mariadb.yaml
+  - deployment-mariadb.yaml
