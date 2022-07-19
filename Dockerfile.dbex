@@ -1,0 +1,32 @@
+FROM centos:7.9.2009
+
+# Dependencies needed by XDMoD
+RUN yum makecache \
+    && yum -y install epel-release centos-release-scl-rh \
+    && yum -y install \
+    gcc-c++ \
+    postfix \ 
+    rpm-build \
+    wget \
+    rh-python38.x86_64 \
+    python3-pip.noarch \
+    git \
+    openssh-clients.x86_64 \
+    && pip3 install --upgrade pip \
+    && pip3 install mysql-connector-python
+
+RUN yum clean all && \
+    rm -rf /var/cache/yum
+
+COPY ./dbex.py /usr/bin/dbex
+
+RUN chmod 777 /usr/bin/dbex \
+    && sed -i -e 's/\r$//' /usr/bin/dbex \
+    && chmod -R g+rwX /usr/bin \
+    && chgrp -R 0 /usr/bin 
+
+EXPOSE 8080
+
+CMD ["/usr/bin/dbex" ]
+
+WORKDIR /
