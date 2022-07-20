@@ -98,13 +98,9 @@ def get_data_from_db(cnx, script):
         (script,),
         "Unable to select file from db",
     )
-    print("{script} -> {data[0][1]")
-    if data and isinstance(data, list):
-        rec = data[0]
-        with open(rec[0], "wb+") as fp:
-            fp.write(rec[1])
 
     cnx.commit()
+    return data
 
 
 def main():
