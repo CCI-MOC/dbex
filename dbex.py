@@ -41,18 +41,15 @@ def exec_fetchone(cursor, sql_stmt, params, error_msg):
 
 def create_file_share_db(cursor):
     """As a work-a-round for RWM, share config files though the database"""
-    count = exec_fetchone(
-        cursor, "select count(*) from information_schema.tables where table_schema='file_share_db'", None, f"Unable to get table count from file_share_db"
+
+    exec_sql(cursor, "drop database if exists file_share_db", None, "Unable to drop database")
+    exec_sql(cursor, "create database file_share_db default character set 'utf8'", None, "Unable to create database")
+    exec_sql(
+        cursor,
+        "create table file_share_db.file ( script varchar(500), file_name varchar(2000), file_data longblob, primary key (script))",
+        None,
+        "Unable to create table",
     )
-    if count < 1:
-        exec_sql(cursor, "drop database if exists file_share_db", None, "Unable to drop database")
-        exec_sql(cursor, "create database file_share_db default character set 'utf8'", None, "Unable to create database")
-        exec_sql(
-            cursor,
-            "create table file_share_db.file ( script varchar(500), file_name varchar(2000), file_data longblob, primary key (script))",
-            None,
-            "Unable to create table",
-        )
 
 
 def write_data_to_db(cursor, data, script):
@@ -114,7 +111,7 @@ def main():
         write_data_to_db(cnx.cursor(), data, "test" + str(cnt))
         get_data_from_db(cnx, "test1")
         cnx.close()
-        cnt = cnt + 10
+        cnt = cnt + 1
 
 
 main()
